@@ -53,8 +53,8 @@ const IMAGES = {
   ]
 };
 
-const useScrollReveal = (threshold = 0.15) => {
-  const ref = useRef<HTMLElement>(null);
+const useScrollReveal = <T extends HTMLElement>(threshold = 0.15) => {
+  const ref = useRef<T>(null);
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -187,27 +187,29 @@ function Navbar({ scrolled, mobileMenu, setMobileMenu }: any) {
 }
 
 function Hero() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
   return (
-    <section id="home" className="min-h-screen relative flex items-center pb-24 px-6 md:px-16 overflow-hidden bg-primary">
+    <section id="home" className="min-h-screen relative flex items-center pt-20 overflow-hidden bg-primary">
       <SafeImage src={IMAGES.hero} alt="Luxury Property Lagos" fill className="object-cover opacity-60" priority />
       <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/60 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent" />
       
-      <div ref={ref} className={`relative z-10 max-w-4xl transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
-        <h1 className="font-heading text-6xl md:text-[6.5rem] font-black text-white leading-[0.9] tracking-tight mb-8">
-          Luxury Living, <span className="text-accent">Redefined</span> Through Expertise
-        </h1>
-        <p className="text-white/70 mt-6 text-xl md:text-2xl max-w-2xl leading-relaxed">
-          Navigate the Lagos property market with confidence. We buy, sell, and manage high-value assets with precision and sharp delivery.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-6 mt-12">
-          <a href="#contact" className="bg-accent text-white px-10 py-5 font-black text-lg hover:brightness-110 transition rounded-full shadow-[0_10px_30px_rgba(240,112,32,0.3)] text-center">
-            Book a Consultation
-          </a>
-          <a href="#products" className="text-white border-2 border-white/30 px-10 py-5 rounded-full hover:bg-white hover:text-primary transition-all font-bold text-lg text-center backdrop-blur-md">
-            View Listings
-          </a>
+      <div className="max-w-7xl mx-auto px-6 md:px-16 w-full relative z-10">
+        <div ref={ref} className={`max-w-4xl transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <h1 className="font-heading text-4xl md:text-7xl font-black text-white leading-[1] tracking-tight mb-8">
+            Luxury Living, <span className="text-accent">Redefined</span> Through Expertise
+          </h1>
+          <p className="text-white/70 mt-6 text-lg md:text-xl max-w-2xl leading-relaxed">
+            Navigate the Lagos property market with confidence. We buy, sell, and manage high-value assets with precision and sharp delivery.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 mt-12">
+            <a href="#contact" className="bg-accent text-white px-10 py-5 font-black text-lg hover:brightness-110 transition rounded-full shadow-[0_10px_30px_rgba(240,112,32,0.3)] text-center">
+              Book a Consultation
+            </a>
+            <a href="#products" className="text-white border-2 border-white/30 px-10 py-5 rounded-full hover:bg-white hover:text-primary transition-all font-bold text-lg text-center backdrop-blur-md">
+              View Listings
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -215,7 +217,7 @@ function Hero() {
 }
 
 function Features() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const features = [
     { title: "Buy & Sell", desc: "Seamless acquisition and liquidation of high-value assets across Lagos.", icon: Building2 },
     { title: "Property Management", desc: "Comprehensive oversight to ensure your investments maintain peak value.", icon: ShieldCheck },
@@ -253,7 +255,7 @@ function Features() {
 }
 
 function About() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollReveal<HTMLElement>();
   return (
     <section id="about" ref={ref} className="py-28 px-6 bg-primary text-white overflow-hidden">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
@@ -312,7 +314,7 @@ function Divider() {
 }
 
 function Products() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const products = [
     {
       name: "Luxury 4-Bedroom Terrace",
@@ -380,7 +382,7 @@ function Products() {
 }
 
 function Contact() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollReveal<HTMLElement>();
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -392,73 +394,107 @@ function Contact() {
   };
 
   return (
-    <section id="contact" ref={ref} className="relative overflow-hidden py-32 min-h-screen flex items-center">
-      <div className="absolute inset-0 bg-accent" />
-      <div className="absolute inset-0 bg-primary [clip-path:polygon(0_0,65%_0,45%_100%,0_100%)] hidden md:block" />
-      <div className="absolute inset-0 bg-primary/95 md:hidden" />
+    <section id="contact" ref={ref} className="py-32 bg-primary relative overflow-hidden">
+      {/* Background Decorative Elements */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-accent/5 -skew-x-12 translate-x-1/4" />
+      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
       
-      <div className="relative z-10 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
-        <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 skew-y-0 translate-y-0' : 'opacity-0 skew-y-2 translate-y-8'}`}>
-          <h2 className="font-heading text-6xl md:text-8xl font-black text-white leading-none mb-10">Start Your <span className="text-accent md:text-white">Journey</span> Today</h2>
-          <div className="space-y-8 text-white/70">
-            <p className="text-xl max-w-sm">{brand.description}</p>
-            <div className="space-y-4">
-              <a href={`https://wa.me/${brand.contact?.whatsapp}`} className="flex items-center gap-4 text-white hover:text-accent transition-colors">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-accent"><Phone size={24} /></div>
-                <span className="text-xl font-bold">{brand.contact?.whatsapp || "09022998123"}</span>
-              </a>
-              <div className="flex items-center gap-4 text-white">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-accent"><MapPin size={24} /></div>
-                <span className="text-xl font-bold">{brand.contact?.address || "Lagos, Nigeria"}</span>
-              </div>
-              <a href={`https://instagram.com/${brand.contact?.instagram?.replace('@', '')}`} className="flex items-center gap-4 text-white hover:text-accent transition-colors">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-accent"><Instagram size={24} /></div>
-                <span className="text-xl font-bold">{brand.contact?.instagram || "@sedarproperties"}</span>
-              </a>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
+          
+          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+            <h2 className="font-heading text-5xl md:text-7xl font-black text-white leading-[1] mb-8">
+              Let&apos;s Build Your <br />
+              <span className="text-accent">Wealth</span> Through Realty
+            </h2>
+            <p className="text-white/60 text-lg md:text-xl max-w-xl mb-12 leading-relaxed font-medium">
+              Whether you&apos;re looking for a luxury home or a high-yield investment, our team is ready to guide you through the Lagos market.
+            </p>
+            
+            <div className="space-y-4 md:space-y-6">
+              {[
+                { icon: Phone, label: "Call Us", value: "0902 299 8123" },
+                { icon: Mail, label: "Email", value: "invest@sedarproperties.com" },
+                { icon: Instagram, label: "Follow", value: "@sedarproperties" }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-4 md:gap-6 p-4 md:p-5 rounded-2xl md:rounded-3xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group overflow-hidden">
+                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-accent flex items-center justify-center text-white shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform duration-500 shrink-0">
+                    <item.icon className="w-6 h-6 md:w-8 md:h-8" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-white/40 text-[10px] md:text-xs uppercase tracking-[0.2em] font-black mb-1">{item.label}</p>
+                    <p className="text-white text-base md:text-2xl font-black break-all md:break-normal line-clamp-1 md:line-clamp-none">{item.value}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        <div className="w-full max-w-lg ml-auto">
-          {sent ? (
-            <div className="bg-white p-12 rounded-[2.5rem] shadow-2xl text-center animate-scaleIn">
-              <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-green-500/30">
-                <CheckCheck size={40} className="text-white" />
+          <div className={`transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+            {sent ? (
+              <div className="bg-white p-12 rounded-[3.5rem] text-center shadow-2xl animate-scaleIn">
+                <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl shadow-green-500/20">
+                  <CheckCheck size={48} className="text-white" />
+                </div>
+                <h3 className="text-4xl font-heading font-black text-primary mb-4 uppercase tracking-tighter">Request Received</h3>
+                <p className="text-primary/60 text-xl font-medium">Our investment team will contact you within 24 hours.</p>
               </div>
-              <h3 className="text-3xl font-heading font-black text-primary mb-4">Request Sent</h3>
-              <p className="text-primary/60 font-medium">Thank you. Our investment team will contact you within the next 24 hours.</p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="bg-white p-10 md:p-12 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.15)] relative">
-              <h3 className="font-heading text-3xl font-black text-primary mb-8">Get a Callback</h3>
-              <div className="space-y-5">
-                {['name', 'email', 'phone'].map((field) => (
-                  <input
-                    key={field}
-                    type={field === 'email' ? 'email' : 'text'}
-                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+            ) : (
+              <div className="bg-white p-8 md:p-14 rounded-[3.5rem] shadow-[0_40px_80px_rgba(0,0,0,0.3)] relative">
+                <div className="absolute -top-6 -right-6 w-28 h-28 bg-accent rounded-full flex flex-col items-center justify-center -rotate-12 shadow-2xl border-8 border-white">
+                  <span className="text-white font-black text-3xl leading-none">24h</span>
+                  <span className="text-white/80 font-bold text-[10px] uppercase tracking-widest mt-1">Reply</span>
+                </div>
+                
+                <h3 className="font-heading text-4xl font-black text-primary mb-10 tracking-tight uppercase italic">Request a Callback</h3>
+                
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <input 
+                      type="text" 
+                      placeholder="Name" 
+                      className="w-full p-5 rounded-2xl bg-secondary border-2 border-transparent focus:border-accent outline-none transition-all font-bold text-primary placeholder:text-primary/30"
+                      required
+                      onChange={(e) => setForm({...form, name: e.target.value})}
+                    />
+                    <input 
+                      type="tel" 
+                      placeholder="Phone" 
+                      className="w-full p-5 rounded-2xl bg-secondary border-2 border-transparent focus:border-accent outline-none transition-all font-bold text-primary placeholder:text-primary/30"
+                      required
+                      onChange={(e) => setForm({...form, phone: e.target.value})}
+                    />
+                  </div>
+                  <input 
+                    type="email" 
+                    placeholder="Email Address" 
+                    className="w-full p-5 rounded-2xl bg-secondary border-2 border-transparent focus:border-accent outline-none transition-all font-bold text-primary placeholder:text-primary/30"
                     required
-                    onChange={(e) => setForm({...form, [field]: e.target.value})}
-                    className="w-full px-6 py-4 rounded-2xl bg-secondary border border-primary/5 focus:border-accent outline-none transition-all font-medium text-primary"
+                    onChange={(e) => setForm({...form, email: e.target.value})}
                   />
-                ))}
-                <textarea
-                  placeholder="Tell us about your property needs"
-                  rows={4}
-                  required
-                  onChange={(e) => setForm({...form, message: e.target.value})}
-                  className="w-full px-6 py-4 rounded-2xl bg-secondary border border-primary/5 focus:border-accent outline-none transition-all font-medium text-primary resize-none"
-                />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-accent text-white py-5 rounded-2xl font-black text-lg hover:brightness-110 shadow-xl shadow-accent/20 transition-all flex justify-center items-center gap-3 disabled:opacity-50"
-                >
-                  {loading ? <Loader2 className="animate-spin" /> : "Request Consultation"}
-                </button>
+                  <textarea 
+                    placeholder="How can we help you today?" 
+                    rows={4}
+                    className="w-full p-5 rounded-2xl bg-secondary border-2 border-transparent focus:border-accent outline-none transition-all font-bold text-primary placeholder:text-primary/30 resize-none"
+                    required
+                    onChange={(e) => setForm({...form, message: e.target.value})}
+                  />
+                  <button 
+                    disabled={loading}
+                    className="w-full bg-primary text-white py-6 rounded-2xl font-black text-xl hover:bg-accent hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-4 group"
+                  >
+                    {loading ? <Loader2 className="animate-spin" /> : (
+                      <>
+                        Get Started
+                        <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+                      </>
+                    )}
+                  </button>
+                </form>
               </div>
-            </form>
-          )}
+            )}
+          </div>
+
         </div>
       </div>
     </section>
